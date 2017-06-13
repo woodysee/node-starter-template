@@ -14,7 +14,7 @@ module.exports = function(app, passport){
     res.render('signup', { message: req.flash('loginMessage') });
   });
 
-  // Sign up
+  // Sign up (if success, redirect to /secret if not redirect back to root)
   app.post('/', passport.authenticate('local-signup', {
     successRedirect : '/secret',
     failureRedirect : '/',

@@ -26,7 +26,7 @@ app.set( 'views', path.join(__dirname, 'views'));
 app.set( 'view engine', 'pug');
 
 // Setup sessions
-app.use(session( { secret: 'ilovevdi'}));
+app.use(session( { secret: 'ilovevdi'}));     //Why do we need express session before passport session? => simplest expn: we have the functions in an array and 
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -41,4 +41,3 @@ require('./routes/routes')(app, passport);
 app.listen( 3000, function(){
     console.log('lisning on port 3000');
 });
-

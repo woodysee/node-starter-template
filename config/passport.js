@@ -21,6 +21,7 @@ module.exports = function( passport ) {
         done(err, user);
       });
   });
+  //
 
   // Passport signup
   passport.use('local-signup', new localStrategy({
@@ -31,20 +32,23 @@ module.exports = function( passport ) {
     function( req, email, password, done){
 
         // Check that the email is in the right format
+        // (false = user not logged in)
         if( !validator.isEmail(email) ){
           return done(null, false, req.flash('loginMessage','That is not a valid email address'));
         }
 
-        // Check that the password is at least 8 chars
+        // Check that the password is at least 8 chars (if not, no signup)
         if( password.length < 8 ){
           return done(null, false, req.flash('loginMessage','The password needs to be 8 chars long'));
         }
 
+        //continue and do it on the next loop
         process.nextTick(function(){
           User.findOne( {'local.email' : email }, function(err, user){
             if(err){
               return done(err);
             }
+            //if we found a user...
             if(user){
               return done(null, false, req.flash('loginMessage','That email is already in use'));
             }else{

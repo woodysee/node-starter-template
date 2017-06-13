@@ -34,11 +34,11 @@ var userSchema = mongoose.Schema({
 /**
  * Password hash middleware.
  */
-userSchema.pre('save', function (next) {
+userSchema.pre('save', function (next) { //next is a function
   const user = this;
   if (!user.isModified('local.password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
-    if (err) { return next(err); }
+    if (err) { return next(err); } //Encrypts the password (all that is does)
     bcrypt.hash(user.local.password, salt, null, (err, hash) => {
       if (err) { return next(err); }
       user.local.password = hash;
@@ -48,11 +48,12 @@ userSchema.pre('save', function (next) {
 });
 
 /**
- * Helper method for validating user's password.
+ * Helper method for validating user's password. (Encrypt the user input using the same method and see if it matches. Cannot decrypt the password.)
  */
 userSchema.methods.validPassword = function (candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.local.password, (err, isMatch) => {
     cb(err, isMatch);
+    //cb is an asynchronous function. So if you want to have feedback, we must have a callback.
   });
 };
 
